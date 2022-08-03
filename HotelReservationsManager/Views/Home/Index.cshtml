@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model HotelReservationsManager.Models.Home.IndexViewModel
+
+<div class="d-flex align-items-center justify-content-center h-100 banner">
+    <h1 class="display-4 text-light">Welcome to the simple hotel reservations manager!</h1>
+</div>
+<div class="row home-row">
+    <div class="col d-flex align-items-center justify-content-center">
+        <div class="text-center">We currently have @Model.FreeRoomsCount free rooms . You can check them out <a asp-controller="Rooms" asp-action="All" class="text-info">here</a>.</div>
+    </div>
+</div>
