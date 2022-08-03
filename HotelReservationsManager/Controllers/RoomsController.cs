@@ -47,13 +47,16 @@ namespace HotelReservationsManager.Controllers
         }
 
 
-        public async Task<IActionResult> All(int id)
+        public async Task<IActionResult> All(int id=1)
         {
-           var rooms= await _roomsService.GetAllAsync(id,2);
+            const int itemsPerPage= 2;
+           var rooms= await _roomsService.GetAllAsync(id,itemsPerPage);
             var model = new AllRoomsViewModel()
             {
+                CurrentPage=id,
                 Rooms = rooms,
-                Count = await _roomsService.GetCount()
+                Count = await _roomsService.GetCount(),
+                ItemsPerPage=itemsPerPage,
             };
             return View(model);
         }
