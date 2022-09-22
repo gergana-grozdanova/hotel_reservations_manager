@@ -1,4 +1,5 @@
 ﻿using HotelReservationsManager.Dtos;
+using HotelReservationsManager.Dtos.Rooms;
 using HotelReservationsManager.Models;
 using HotelReservationsManager.Services.Rooms;
 using Microsoft.AspNetCore.Authorization;
@@ -25,9 +26,9 @@ namespace HotelReservationsManager.Controllers
                 return this.RedirectToAction("Login", "Identity");
             }
 
-            var model = new RoomDto()
+            var model = new InputRoomDto()
             {
-
+                IsAvaible=true,
             };
             return View(model);
         }
@@ -50,7 +51,7 @@ namespace HotelReservationsManager.Controllers
         public async Task<IActionResult> All(int id=1)
         {
             const int itemsPerPage= 2;
-           var rooms= await _roomsService.GetAllAsync(id,itemsPerPage);
+           var rooms= await _roomsService.GetAllPaginatedAsync(id,itemsPerPage);
             var model = new AllRoomsViewModel()
             {
                 CurrentPage=id,
@@ -60,7 +61,21 @@ namespace HotelReservationsManager.Controllers
             };
             return View(model);
         }
-        
+
+        public async Task<IActionResult> AllFree(int id = 1)
+        {
+            const int itemsPerPage = 2;
+            var rooms = await _roomsService.GetFreeRoomsAsync(id, itemsPerPage);
+            var model = new AllRoomsViewModel()
+            {
+                CurrentPage = id,
+                Rooms = rooms,
+                Count = await _roomsService.GetCount(),
+                ItemsPerPage = itemsPerPage,
+            };
+            return View("All",model);
+        }
+
         [Authorize(Roles = AdminRoleName)]
         public async  Task<IActionResult> Delete(string id)
         {
@@ -85,7 +100,7 @@ namespace HotelReservationsManager.Controllers
                 return View(input);
             }
             await _roomsService.UpdateAsync(input);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("All");
         }
     }
 }

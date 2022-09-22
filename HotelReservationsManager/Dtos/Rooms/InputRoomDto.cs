@@ -1,6 +1,6 @@
-﻿namespace HotelReservationsManager.Dtos
+﻿namespace HotelReservationsManager.Dtos.Rooms
 {
-    public class RoomDto:BaseDto
+    public class InputRoomDto:InputDto
     {
         public int Capacity { get; set; }
         public string Type { get; set; }

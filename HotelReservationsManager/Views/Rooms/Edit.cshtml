@@ -1,4 +1,4 @@
-﻿@using HotelReservationsManager.Dtos
+﻿@using HotelReservationsManager.Dtos.Rooms
 @model RoomDto
 
 <h1>Edit room</h1>
@@ -34,6 +34,11 @@
                     <input asp-for="@Model.ChildPrice" value="@Model.ChildPrice" class="form-control"  aria-required="true" />
                     <label asp-for="@Model.ChildPrice" class="form-label"></label>
                   
+                </div>
+               
+                <div class="form-group form-check">
+                    <input asp-for="@Model.IsAvaible" value="@Model.IsAvaible" class = "form-check-input" aria-required="true"/> 
+                    <label asp-for="@Model.IsAvaible" class = "form-check-label"></label>
                 </div>
                
                 <div>

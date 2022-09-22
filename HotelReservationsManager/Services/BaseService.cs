@@ -15,9 +15,9 @@ namespace HotelReservationsManager.Services
         {
             _baseRepository = baseRepository;
         }
-        public virtual async Task<List<TDto>> GetAllAsync(int page, int itemsPerPage)
+        public virtual async Task<List<TDto>> GetAllPaginatedAsync(int page, int itemsPerPage)
         {
-            return await _baseRepository.GetAllAsync( page, itemsPerPage);
+            return await _baseRepository.GetAllPaginatedAsync( page, itemsPerPage);
         }
 
         public virtual async Task<TDto> GetByIdAsync(string id)
@@ -25,7 +25,7 @@ namespace HotelReservationsManager.Services
             return await _baseRepository.GetByIdAsync(id);
         }
 
-        public virtual async Task<TInputDto> CreateAsync(TInputDto dto)
+        public virtual async Task<TDto> CreateAsync(TInputDto dto)
         {
             return await _baseRepository.CreateAsync(dto);
         }
@@ -41,6 +41,16 @@ namespace HotelReservationsManager.Services
         public virtual async Task<int> GetCount()
         {
            return await _baseRepository.GetCount();
+        }
+
+        public virtual async Task<List<TDto>> GetAllAsync()
+        {
+         return  await _baseRepository.GetAllAsync();
+        }
+
+        public virtual async Task<List<TInputDto>> AddRange(List<TInputDto> dtos)
+        {
+            return await _baseRepository.AddRange(dtos);
         }
     }
     }

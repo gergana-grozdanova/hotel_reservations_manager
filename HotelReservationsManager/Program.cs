@@ -1,6 +1,5 @@
 using HotelReservationsManager.Data;
 using HotelReservationsManager.Data.Entities;
-using HotelReservationsManager.Repositories;
 using HotelReservationsManager.Repositories.Rooms;
 using HotelReservationsManager.Seeding;
 using HotelReservationsManager.Services;
@@ -13,6 +12,12 @@ using Autofac.Extensions.DependencyInjection;
 using HotelReservationsManager.Dtos;
 using AutoMapper;
 using HotelReservationsManager;
+using HotelReservationsManager.Settings;
+using HotelReservationsManager.Services.Mail;
+using HotelReservationsManager.Services.Clients;
+using HotelReservationsManager.Repositories.Clients;
+using HotelReservationsManager.Repositories.Reservations;
+using HotelReservationsManager.Services.Reservations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,9 +45,17 @@ builder.Services.AddMvc();
 builder.Services.AddScoped<ISeeder, Seeder>();
 //builder.Services.AddTransient(typeof(IBaseRepository<>),typeof(BaseRepository<>));
 builder.Services.AddTransient<IRoomsRepository, RoomsRepository>();
+builder.Services.AddTransient<IClientsRepository, ClientsRepository>();
+builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
 
 //builder.Services.AddTransient<IBaseService<BaseDto>,BaseService<BaseDto>>();
 builder.Services.AddTransient<IRoomsService, RoomsService>();
+builder.Services.AddTransient<IClientsService,ClientsService>();
+builder.Services.AddTransient<IReservationService,ReservationService>();
+
+
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<IMailService, MailService>();
 
 var app = builder.Build();
 

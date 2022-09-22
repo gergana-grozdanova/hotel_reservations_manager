@@ -1,12 +1,12 @@
-﻿namespace HotelReservationsManager.Dtos
+﻿namespace HotelReservationsManager.Dtos.Rooms
 {
-    public class InputRoomDto:InputDto
+    public class RoomDto:BaseDto
     {
         public int Capacity { get; set; }
         public string Type { get; set; }
         public decimal AdultPrice { get; set; }
         public decimal ChildPrice { get; set; }
         public int Number { get; set; }
-        public bool IsAvaible { get; set; } = true;
+        public bool IsAvaible { get; set; }
     }
 }

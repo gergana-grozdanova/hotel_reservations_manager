@@ -1,5 +1,5 @@
-﻿using HotelReservationsManager.Data;
-using HotelReservationsManager.Dtos;
+﻿
+using HotelReservationsManager.Dtos.Rooms;
 using HotelReservationsManager.Repositories;
 using HotelReservationsManager.Repositories.Rooms;
 
@@ -11,6 +11,11 @@ namespace HotelReservationsManager.Services.Rooms
         public RoomsService(IRoomsRepository roomsRepository) : base(roomsRepository)
         {
             _roomsRepository = roomsRepository;
+        }
+
+        public Task<List<RoomDto>> GetFreeRoomsAsync(int page ,int itemsPerPage)
+        {
+            return _roomsRepository.GetFreeRoomsAsync(page,itemsPerPage);
         }
 
         public int GetFreeRoomsCount()

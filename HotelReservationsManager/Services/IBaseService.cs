@@ -9,9 +9,11 @@ namespace HotelReservationsManager.Services
         public Task<TDto> GetByIdAsync(string id);
         public Task<int> GetCount();
 
-        public Task<List<TDto>> GetAllAsync(int page,int itemsPerPage);
+        public Task<List<TDto>> GetAllAsync();
+        public Task<List<TDto>> GetAllPaginatedAsync(int page,int itemsPerPage);
 
-        public Task<TInputDto> CreateAsync(TInputDto dto);
+        public Task<TDto> CreateAsync(TInputDto dto);
+        public Task<List<TInputDto>> AddRange(List<TInputDto> dtos);
 
         public Task DeleteAsync(string id);
 

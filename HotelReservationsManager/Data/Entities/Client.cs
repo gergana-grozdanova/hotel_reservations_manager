@@ -1,5 +1,7 @@
 ﻿
 
+using System.Collections.Generic;
+
 namespace HotelReservationsManager.Data.Entities
 {
     public partial class Client:BaseEntity
@@ -10,12 +12,14 @@ namespace HotelReservationsManager.Data.Entities
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public bool? IsAdult { get; set; }
-        public string ReservationId { get; set; }
-        public Reservation Reservation { get; set; }
+       // public virtual ICollection<ClientReservation> ClientReservations { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
 
         public Client()
         {
             this.Id = Guid.NewGuid().ToString();
+          // this.ClientReservations = new HashSet<ClientReservation>();
+          this.Reservations=new HashSet<Reservation>();
         }
     }
 }

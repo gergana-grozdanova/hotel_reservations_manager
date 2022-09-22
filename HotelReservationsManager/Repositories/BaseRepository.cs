@@ -7,10 +7,10 @@ using System.Linq.Expressions;
 
 namespace HotelReservationsManager.Repositories
 {
-    public class BaseRepository<TDto, TEntity,TInputDto> : IBaseRepository<TDto, TInputDto>
+    public class BaseRepository<TDto, TEntity, TInputDto> : IBaseRepository<TDto, TInputDto>
         where TDto : BaseDto
         where TEntity : BaseEntity
-        where TInputDto:InputDto
+        where TInputDto : InputDto
     {
         protected readonly ApplicationDbContext _dbContext;
         protected readonly IMapper _mapper;
@@ -23,15 +23,28 @@ namespace HotelReservationsManager.Repositories
             entities = dbContext.Set<TEntity>();
         }
 
-        public async Task<TInputDto> CreateAsync(TInputDto dto)
-        {          
+        public async Task<TDto> CreateAsync(TInputDto dto)
+        {
             TEntity entity = _mapper.Map<TEntity>(dto);
 
             await entities.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
 
-            return _mapper.Map<TInputDto>(entity);
+            return _mapper.Map<TDto>(entity);
         }
+
+        public async Task<List<TInputDto>> AddRange(List<TInputDto> dtos)
+        {
+            List<TEntity> range =dtos.Select(dto=> _mapper.Map<TEntity>(dto)).ToList();
+
+            await entities.AddRangeAsync(range);
+            await _dbContext.SaveChangesAsync();
+
+            return range.Select(entity => _mapper.Map<TInputDto>(entity)).ToList();
+
+        }
+           
+
 
         public async Task<TDto> GetByIdAsync(string id)
         {
@@ -43,7 +56,7 @@ namespace HotelReservationsManager.Repositories
             return dto;
         }
 
-        public async Task<List<TDto>> GetAllAsync(int page,int itemsPerPage)
+        public async Task<List<TDto>> GetAllPaginatedAsync(int page,int itemsPerPage)
         {
             //var query = entities.AsQueryable();
 
@@ -95,6 +108,11 @@ namespace HotelReservationsManager.Repositories
         public async Task<int> GetCount()
         {
             return await entities.CountAsync();
+        }
+
+        public async Task<List<TDto>> GetAllAsync()
+        {
+            return await _mapper.ProjectTo<TDto>(entities).ToListAsync();
         }
     }
 }

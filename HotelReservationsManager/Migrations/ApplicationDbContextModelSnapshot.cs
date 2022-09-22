@@ -17,10 +17,25 @@ namespace HotelReservationsManager.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ClientReservation", b =>
+                {
+                    b.Property<string>("ClientsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ReservationsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ClientsId", "ReservationsId");
+
+                    b.HasIndex("ReservationsId");
+
+                    b.ToTable("ClientReservation");
+                });
 
             modelBuilder.Entity("HotelReservationsManager.Data.Entities.ApplicationUser", b =>
                 {
@@ -129,13 +144,7 @@ namespace HotelReservationsManager.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReservationId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ReservationId");
 
                     b.ToTable("Clients");
                 });
@@ -161,6 +170,7 @@ namespace HotelReservationsManager.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RoomId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
@@ -341,22 +351,28 @@ namespace HotelReservationsManager.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("HotelReservationsManager.Data.Entities.Client", b =>
+            modelBuilder.Entity("ClientReservation", b =>
                 {
-                    b.HasOne("HotelReservationsManager.Data.Entities.Reservation", "Reservation")
-                        .WithMany("Clients")
-                        .HasForeignKey("ReservationId")
+                    b.HasOne("HotelReservationsManager.Data.Entities.Client", null)
+                        .WithMany()
+                        .HasForeignKey("ClientsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Reservation");
+                    b.HasOne("HotelReservationsManager.Data.Entities.Reservation", null)
+                        .WithMany()
+                        .HasForeignKey("ReservationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HotelReservationsManager.Data.Entities.Reservation", b =>
                 {
                     b.HasOne("HotelReservationsManager.Data.Entities.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HotelReservationsManager.Data.Entities.ApplicationUser", "User")
                         .WithMany()
@@ -418,11 +434,6 @@ namespace HotelReservationsManager.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HotelReservationsManager.Data.Entities.Reservation", b =>
-                {
-                    b.Navigation("Clients");
                 });
 #pragma warning restore 612, 618
         }

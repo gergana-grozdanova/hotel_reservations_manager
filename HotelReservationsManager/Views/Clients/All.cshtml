@@ -1,0 +1,84 @@
+﻿@model AllClientsViewModel
+
+@{
+    ViewData["Title"] = "All clients";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                   <a>Firstname</a>
+                </th>
+                <th>
+                 <a>Lastname</a>
+                </th>
+                <th>
+                    <a>Email</a>
+                </th>
+                <th>
+                    <a>PhoneNumber</a>
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Clients) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Firstname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lastname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                @*<a asp-action="Details" asp-route-id="@item.Id">All reservations</a> |*@
+                <a asp-action="Delete"  asp-route-id="@item.Id">Delete</a>
+                <button class="allReservations"></button>
+            </td>
+        </tr>
+}
+    </tbody>  
+</table>
+ <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @if(!Model.HasPreviousPage) { <text>disabled</text> }">
+               <a class="page-link" asp-action="All" asp-route-id="@Model.PreviousPageNumber">Previous</a>
+            </li>
+            @for (var i = @Model.CurrentPage-3; i < @Model.CurrentPage; i++)
+           {
+            @if (i > 0)
+              {
+                <li class="page-item"><a class="page-link" asp-action="All" asp-route-id="@i">@i</a></li>
+              }
+           }
+           
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">
+                   @Model.CurrentPage
+                </span>
+            </li>
+             @for (var i = @Model.CurrentPage+1; i < @Model.CurrentPage+4; i++)
+            {
+                @if(i<=@Model.PagesCount)
+                {
+                <li class="page-item"><a class="page-link"  asp-action="All" asp-route-id="@i">@i</a></li>
+                }
+                
+            }
+            
+            <li class="page-item @if(!Model.HasNextPage) {<text>disabled</text>}">
+                <a class="page-link" asp-action="All" asp-route-id="@Model.NextPageNumber">Next</a>
+            </li>
+        </ul>
+    </nav>
+  
